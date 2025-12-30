@@ -1,0 +1,4 @@
+.short-desc:hover {
+    outline: 3px yellow solid;
+    background-color: rgba(100, 100, 100, 0.2);
+}
