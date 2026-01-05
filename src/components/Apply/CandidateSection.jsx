@@ -1,10 +1,8 @@
 import { TextField, Button } from "@mui/material";
-import { useFilePicker } from "use-file-picker";
 
 const styles = {
   container: {
     width: "80%",
-    height: "30%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -13,50 +11,73 @@ const styles = {
 
   buttonGroup: {
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-around",
-    width: "80%",
-    maxWidth: "15em",
+    width: "10%",
+    height: "10em",
     padding: "0",
   },
 };
 
-const CandidateSection = () => {
-  const {
-    openFilePicker: openCvPicker,
-    fileContent: CvContent,
-    loading: CvLoading,
-  } = useFilePicker({
-    accept: ".pdf",
-  });
-  const {
-    openFilePicker: openPhotoPicker,
-    fileContent: photoContent,
-    loading: photoLoading,
-  } = useFilePicker({
-    accept: "image/*",
-  });
-
+const CandidateSection = ({
+  handleNameChange,
+  handleMailChange,
+  selectPhoto,
+  selectCv,
+}) => {
   return (
     <div style={styles.container}>
-      <TextField label="Nom" />
-      <TextField label="e-mail" />
-      <div style={styles.buttonGroup}>
-        <Button
-          onClick={() => {
-            console.log("clicked");
-            openPhotoPicker();
+      <div
+        style={{
+          width: "90%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
+        <div
+          style={{
+            width: "80%",
+            height: "10em",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-around",
           }}
         >
-          CV
-        </Button>
-        <Button
-          onClick={() => {
-            openCvPicker();
-          }}
-        >
-          Photo
-        </Button>
+          <TextField
+            label="Nom"
+            style={{ width: "50%" }}
+            onChange={(e) => {
+              handleNameChange(e.target.value);
+            }}
+          />
+          <TextField
+            label="e-mail"
+            style={{ width: "80%" }}
+            onChange={(e) => {
+              handleMailChange(e.target.value);
+            }}
+          />
+        </div>
+
+        <div style={styles.buttonGroup}>
+          <Button
+            onClick={() => {
+              selectCv();
+            }}
+          >
+            CV
+          </Button>
+          <Button
+            onClick={() => {
+              selectPhoto();
+            }}
+          >
+            Photo
+          </Button>
+        </div>
       </div>
     </div>
   );

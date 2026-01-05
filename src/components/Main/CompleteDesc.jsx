@@ -48,21 +48,30 @@ const styles = {
 const CompleteDesc = ({ candidateData }) => {
   return (
     <div style={styles.container}>
-      <button style={styles.cvButton}>Get CVs</button>
+      <button
+        style={styles.cvButton}
+        onClick={() => {
+          window.open(candidateData.candidate_1_cv_url);
+
+          window.open("wikipedia.com");
+        }}
+      >
+        Get CVs
+      </button>
       <div style={styles.head}>
         <img
-          src={candidateData.candidate1.photoURL}
+          src={candidateData.candidate_1_photo_url}
           style={styles.candidatePhoto}
         />
-        {candidateData.candidate2.photoURL && (
+        {candidateData.candidate_2_photo_url && (
           <img
-            src={candidateData.candidate2.photoURL}
+            src={candidateData.candidate_2_photo_url}
             style={styles.candidatePhoto}
           />
         )}
       </div>
       <div style={styles.mainInfo}>
-        <p style={{ color: "white" }}>{candidateData.longDesc}</p>
+        <p style={{ color: "white" }}>{candidateData.long_description}</p>
       </div>
     </div>
   );

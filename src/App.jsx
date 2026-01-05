@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getAllCandidates } from "./utilities/dbInterfaces";
 import Nav from "./components/Nav/Container";
 import Main from "./components/Main/Container";
 import SideMenu from "./components/SideMenu/Container";
@@ -15,6 +16,12 @@ const eltContainerStyle = {
 function App() {
   const [filter, setFilter] = useState("all");
   const [candidates, setCandidates] = useState(mockupCandidates);
+
+  useEffect(() => {
+    getAllCandidates().then((result) => {
+      setCandidates(result.documents);
+    });
+  }, []);
 
   return (
     <div class="container" style={eltContainerStyle}>

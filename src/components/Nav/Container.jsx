@@ -8,7 +8,6 @@ const Nav = () => {
     setModalVisible(false);
   };
   const handleModalOpen = () => {
-    console.log("clicked open modal");
     setModalVisible(true);
   };
   return (

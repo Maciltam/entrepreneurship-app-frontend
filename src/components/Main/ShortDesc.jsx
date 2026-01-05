@@ -17,6 +17,10 @@ const containerStyle = {
   position: "relative",
 };
 
+const subcontainerStyle = {
+  width: "80%",
+};
+
 const imageStyle = {
   height: "90%",
   aspectRatio: "1 / 1",
@@ -33,9 +37,9 @@ const ShortDesc = ({ candidateData }) => {
 
   return (
     <div style={containerStyle} className="short-desc">
-      <img src={candidateData.candidate1.photoURL} style={imageStyle} />
-      <div>
-        <p>{candidateData.shortDesc}</p>
+      <img src={candidateData.candidate_1_photo_url} style={imageStyle} />
+      <div className="short-desc-sub-container" style={subcontainerStyle}>
+        <p>{candidateData.short_description}</p>
         <button
           style={buttonStyle}
           onClick={() => {

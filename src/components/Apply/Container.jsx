@@ -5,23 +5,54 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  TextField,
+  CircularProgress,
 } from "@mui/material";
 import ProjectSection from "./ProjectSection";
 import CandidateSection from "./CandidateSection";
+import { useFilePicker } from "use-file-picker";
+import { FileSizeValidator } from "use-file-picker/validators";
+import { postApplication } from "../../assets/mockupApplication";
 
 const emptyApplication = {
-  type: "",
-  candidate1: {},
-  candidate2: {},
-  project: {
-    shortDesc: "",
-    longDesc: "",
+  personal_code: "",
+  application_type: "",
+  table_data: {
+    candidate1_name: "",
+    candidate2_name: "",
+    candidate1_mail: "",
+    candidate2_mail: "",
+    short_description: "",
+    long_description: "",
+    department: "",
+  },
+  files: {
+    candidate1: {
+      photo: {
+        content: null,
+        name: null,
+      },
+      cv: {
+        content: null,
+        name: null,
+      },
+    },
+    candidate2: {
+      photo: {
+        content: null,
+        name: null,
+      },
+      cv: {
+        content: null,
+        name: null,
+      },
+    },
   },
 };
 
 const styles = {
   container: {
-    position: "relative",
+    position: "absolute",
     left: "50%",
     top: "50%",
     transform: "translate(-50%, -50%)",
@@ -38,33 +69,243 @@ const styles = {
     backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
 };
-
+//
 const ApplyForm = () => {
   const [application, setApplication] = useState(emptyApplication);
+  const [personalCode, setPersonalCode] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  //************************************************set file function
+  const setFile = (candidate, type, fileName, file) => {
+    setApplication((prevApplication) => {
+      prevApplication.files[candidate][type] = {
+        content: file,
+        name: fileName,
+      };
+      return prevApplication;
+    });
+  };
+
+  const checkFileErrors = (error1, error2, error3, error4) => {
+    const errorMessages = [];
+    if (error1.length) errorMessages.push("Photo candidat 1 trop large");
+    if (error2.length) errorMessages.push("CV candidat 1 trop large");
+    if (error3.length) errorMessages.push("Photo candidat 2 trop large");
+    if (error4.length) errorMessages.push("CV candidat 2 trop large");
+
+    console.log(errorMessages.join("\n"));
+
+    return errorMessages.length;
+  };
+
+  //Candidate 1: ***********************************************
+
+  //Files :
+  const {
+    openFilePicker: openCv1Picker,
+    filesContent: cv1Content,
+    errors: cv1Errors,
+    loading: cv1Loading,
+  } = useFilePicker({
+    accept: ".pdf",
+    validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
+  });
+  const {
+    openFilePicker: openPhoto1Picker,
+    filesContent: photo1Content,
+    errors: photo1Errors,
+    loading: photo1Loading,
+  } = useFilePicker({
+    accept: "image/*",
+    validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
+  });
+
+  //Name and mail
+  const handleName1Change = (newName) => {
+    setApplication((prevApplication) => {
+      prevApplication.table_data.candidate1_name = newName;
+      return prevApplication;
+    });
+  };
+  const handleMail1Change = (newMail) => {
+    setApplication((prevApplication) => {
+      prevApplication.table_data.candidate1_mail = newMail;
+      return prevApplication;
+    });
+  };
+
+  // Candidate 2: **********************************
+  // Name and mail
+  const handleName2Change = (newName) => {
+    setApplication((prevApplication) => {
+      prevApplication.table_data.candidate2_name = newName;
+      return prevApplication;
+    });
+  };
+
+  const handleMail2Change = (newMail) => {
+    setApplication((prevApplication) => {
+      prevApplication.table_data.candidate2_mail = newMail;
+      return prevApplication;
+    });
+  };
+  //Files
+  const {
+    openFilePicker: openCv2Picker,
+    filesContent: cv2Content,
+    errors: cv2Errors,
+    loading: cv2Loading,
+  } = useFilePicker({
+    accept: ".pdf",
+    validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
+  });
+
+  const {
+    openFilePicker: openPhoto2Picker,
+    filesContent: photo2Content,
+    errors: photo2Errors,
+    loading: photo2Loading,
+  } = useFilePicker({
+    accept: "image/*",
+    validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
+  });
+  //**********************************************
+  const handleShortDescriptionChange = (newDesc) => {
+    setApplication((prevApplication) => {
+      prevApplication.table_data.short_description = newDesc;
+      return prevApplication;
+    });
+  };
+
+  const handleLongDescriptionChange = (newDesc) => {
+    setApplication((prevApplication) => {
+      prevApplication.table_data.long_description = newDesc;
+      return prevApplication;
+    });
+  };
 
   return (
     <div style={styles.container}>
-      <FormControl style={{ width: "30%" }}>
-        <InputLabel>Type</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={application.type}
-          label="Age"
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-around",
+          width: "60%",
+          padding: "2em 5em",
+        }}
+      >
+        <FormControl style={{ width: "40%" }}>
+          <InputLabel>Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={application.type}
+            label="Age"
+            onChange={(e) => {
+              setApplication({
+                ...application,
+                application_type: e.target.value,
+              });
+            }}
+          >
+            <MenuItem value="monome">Monome</MenuItem>
+            <MenuItem value="binome">Binome</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          label="Code personnel"
+          style={{ width: "40%" }}
           onChange={(e) => {
-            setApplication({ ...application, type: e.target.value });
+            setApplication({ ...application, personal_code: e.target.value });
           }}
-        >
-          <MenuItem value="monome">Monome</MenuItem>
-          <MenuItem value="binome">Binome</MenuItem>
-        </Select>
-      </FormControl>
-      <CandidateSection candidate={1} setApplication={setApplication} />
-      {application.type == "binome" && (
-        <CandidateSection candidate={2} setApplication={setApplication} />
+        />
+      </div>
+      <TextField
+        label="Departement"
+        style={{ width: "40%" }}
+        onChange={(e) => {
+          setApplication({
+            ...application,
+            table_data: {
+              ...application.table_data,
+              department: e.target.value,
+            },
+          });
+        }}
+      />
+      <CandidateSection
+        handleNameChange={handleName1Change}
+        handleMailChange={handleMail1Change}
+        selectPhoto={openPhoto1Picker}
+        selectCv={openCv1Picker}
+      />
+      {application.application_type == "binome" && (
+        <CandidateSection
+          handleNameChange={handleName2Change}
+          handleMailChange={handleMail2Change}
+          selectPhoto={openPhoto2Picker}
+          selectCv={openCv2Picker}
+        />
       )}
-      <ProjectSection setApplication={setApplication} />
-      <Button color="success">Envoyer</Button>
+      <ProjectSection
+        setApplication={setApplication}
+        handleShortDescriptionChange={handleShortDescriptionChange}
+        handleLongDescriptionChange={handleLongDescriptionChange}
+      />
+      <div>
+        {isLoading && <CircularProgress />}
+        {!isLoading && (
+          <Button
+            onClick={async () => {
+              setFile(
+                "candidate1",
+                "photo",
+                photo1Content[0].name,
+                photo1Content[0].content,
+              );
+
+              setFile(
+                "candidate1",
+                "cv",
+                cv1Content[0].name,
+                cv1Content[0].content,
+              );
+
+              if (application.application_type == "binome") {
+                setFile(
+                  "candidate2",
+                  "photo",
+                  photo2Content[0].name,
+                  photo2Content[0].content,
+                );
+                setFile(
+                  "candidate2",
+                  "cv",
+                  cv2Content[0].name,
+                  cv2Content[0].content,
+                );
+              }
+              console.log(application);
+              const errorIndicator = checkFileErrors(
+                photo1Errors,
+                cv1Errors,
+                photo2Errors,
+                cv2Errors,
+              );
+              if (errorIndicator) {
+                return;
+              }
+              setIsLoading(true);
+              const response = await postApplication(application);
+              setIsLoading(false);
+              console.log(response);
+            }}
+          >
+            Envoyer
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
