@@ -22,7 +22,6 @@ function App() {
 
   useEffect(() => {
     getAllCandidates().then((result) => {
-      console.log(result);
       setCandidates(result.documents);
     });
   }, []);

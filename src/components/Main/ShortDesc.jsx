@@ -49,7 +49,7 @@ const ShortDesc = ({ candidateData }) => {
         },
       }
     : {};
-  console.log("Short description: ", candidateData);
+
   const [modalVisibility, setModalVisibility] = useState(false);
 
   return (

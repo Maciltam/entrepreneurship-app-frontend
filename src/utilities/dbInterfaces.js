@@ -13,7 +13,7 @@ const getAllCandidates = async () => {
       collectionId: "candidates",
       queries: [],
     });
-    console.log("response inside function: ", response.documents);
+
     return response;
   } catch (err) {
     console.log(err);

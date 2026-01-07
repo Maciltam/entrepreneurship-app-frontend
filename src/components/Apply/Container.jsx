@@ -309,9 +309,8 @@ const ApplyForm = () => {
                 return;
               }
               setIsLoading(true);
-              const response = await postApplication(application);
+              await postApplication(application);
               setIsLoading(false);
-              console.log(response);
             }}
           >
             Envoyer
