@@ -1,6 +1,8 @@
+import { useMediaQuery } from "@mui/material";
+
 const styles = {
   container: {
-    width: "50%",
+    width: "40%",
     height: "80%",
     display: "flex",
     flexDirection: "column",
@@ -14,6 +16,7 @@ const styles = {
     outline: "3px solid white",
     borderRadius: "1em",
     backgroundColor: "rgba(0, 0, 0, 0.9)",
+    overflow: "scroll",
   },
   head: {
     height: "20%",
@@ -29,7 +32,6 @@ const styles = {
   },
   mainInfo: {
     width: "100%",
-    height: "60%",
     padding: "1em 1em",
     textAlign: "center",
   },
@@ -39,33 +41,35 @@ const styles = {
     right: "1em",
   },
   cvButton: {
-    position: "absolute",
-    bottom: "1em",
-    right: "1em",
+    alignSelf: "flex-end",
   },
 };
 
-const CompleteDesc = ({ candidateData }) => {
-  return (
-    <div style={styles.container}>
-      <button
-        style={styles.cvButton}
-        onClick={() => {
-          window.open(candidateData.candidate_1_cv_url);
+const openToCv = async (cv) => {
+  window.open(cv);
+};
 
-          window.open("wikipedia.com");
-        }}
-      >
-        Get CVs
-      </button>
+const CompleteDesc = ({ candidateData }) => {
+  const isMobile = useMediaQuery("(orientation: portrait)");
+  const responsiveStyles = isMobile
+    ? {
+        container: {
+          width: "85%",
+          height: "90%",
+          padding: "0.5em",
+        },
+      }
+    : {};
+  return (
+    <div style={{ ...styles.container, ...responsiveStyles.container }}>
       <div style={styles.head}>
         <img
-          src={candidateData.candidate_1_photo_url}
+          src={candidateData.candidate1_photo_url}
           style={styles.candidatePhoto}
         />
-        {candidateData.candidate_2_photo_url && (
+        {candidateData.candidate2_photo_url && (
           <img
-            src={candidateData.candidate_2_photo_url}
+            src={candidateData.candidate2_photo_url}
             style={styles.candidatePhoto}
           />
         )}
@@ -73,6 +77,15 @@ const CompleteDesc = ({ candidateData }) => {
       <div style={styles.mainInfo}>
         <p style={{ color: "white" }}>{candidateData.long_description}</p>
       </div>
+      <button
+        style={styles.cvButton}
+        onClick={async () => {
+          await openToCv(candidateData.candidate1_cv_url);
+          await openToCv(candidateData.candidate2_cv_url);
+        }}
+      >
+        Get CVs
+      </button>
     </div>
   );
 };

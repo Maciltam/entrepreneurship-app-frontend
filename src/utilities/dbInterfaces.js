@@ -1,4 +1,4 @@
-import { Client, Databases, Storage, ID, Functions } from "appwrite";
+import { Client, Databases, Functions } from "appwrite";
 
 const getAllCandidates = async () => {
   const client = new Client()
@@ -8,11 +8,11 @@ const getAllCandidates = async () => {
   const dbInterface = new Databases(client);
 
   try {
-    const response = await dbInterface.listDocuments(
-      "6954422e003ae9b9b994",
-      "candidates",
-      [],
-    );
+    const response = await dbInterface.listDocuments({
+      databaseId: "6954422e003ae9b9b994",
+      collectionId: "candidates",
+      queries: [],
+    });
     console.log("response inside function: ", response.documents);
     return response;
   } catch (err) {

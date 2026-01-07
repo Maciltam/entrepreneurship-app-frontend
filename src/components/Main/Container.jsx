@@ -3,7 +3,10 @@ import ShortDesc from "./ShortDesc";
 const styles = {
   display: "flex",
   flexDirection: "column",
-  width: "100%",
+  alignItems: "center",
+  algnSelf: "center",
+  justifyContent: "space-around",
+  width: "90vw",
   paddingTop: "2em",
 };
 

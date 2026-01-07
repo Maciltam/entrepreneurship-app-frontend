@@ -13,6 +13,7 @@ import CandidateSection from "./CandidateSection";
 import { useFilePicker } from "use-file-picker";
 import { FileSizeValidator } from "use-file-picker/validators";
 import { postApplication } from "../../assets/mockupApplication";
+import { useMediaQuery } from "@mui/material";
 
 const emptyApplication = {
   personal_code: "",
@@ -56,7 +57,7 @@ const styles = {
     left: "50%",
     top: "50%",
     transform: "translate(-50%, -50%)",
-    width: "50%",
+    width: "40%",
     height: "80%",
     display: "flex",
     flexDirection: "column",
@@ -74,6 +75,15 @@ const ApplyForm = () => {
   const [application, setApplication] = useState(emptyApplication);
   const [personalCode, setPersonalCode] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isMobile = useMediaQuery("(orientation: portrait)");
+  const responsiveStyles = isMobile
+    ? {
+        width: "90%",
+        height: "90%",
+        padding: "0",
+      }
+    : {};
 
   //************************************************set file function
   const setFile = (candidate, type, fileName, file) => {
@@ -107,7 +117,7 @@ const ApplyForm = () => {
     errors: cv1Errors,
     loading: cv1Loading,
   } = useFilePicker({
-    accept: ".pdf",
+    readAs: "BinaryString",
     validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
   });
   const {
@@ -116,7 +126,7 @@ const ApplyForm = () => {
     errors: photo1Errors,
     loading: photo1Loading,
   } = useFilePicker({
-    accept: "image/*",
+    readAs: "BinaryString",
     validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
   });
 
@@ -185,7 +195,7 @@ const ApplyForm = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={{ ...styles.container, ...responsiveStyles }}>
       <div
         style={{
           display: "flex",
@@ -253,7 +263,7 @@ const ApplyForm = () => {
         handleShortDescriptionChange={handleShortDescriptionChange}
         handleLongDescriptionChange={handleLongDescriptionChange}
       />
-      <div>
+      <div className="Send-button-div">
         {isLoading && <CircularProgress />}
         {!isLoading && (
           <Button
@@ -286,7 +296,7 @@ const ApplyForm = () => {
                   cv2Content[0].content,
                 );
               }
-              console.log(application);
+
               const errorIndicator = checkFileErrors(
                 photo1Errors,
                 cv1Errors,

@@ -48,7 +48,7 @@ const CandidateSection = ({
         >
           <TextField
             label="Nom"
-            style={{ width: "50%" }}
+            style={{ width: "80%" }}
             onChange={(e) => {
               handleNameChange(e.target.value);
             }}

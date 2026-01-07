@@ -9,16 +9,20 @@ import { darkTheme, lightTheme } from "./themes/themes";
 import { ThemeProvider } from "@mui/material/styles";
 
 const eltContainerStyle = {
-  width: "100%",
+  width: "100vw",
   height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 function App() {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("Tous les candidats");
   const [candidates, setCandidates] = useState(mockupCandidates);
 
   useEffect(() => {
     getAllCandidates().then((result) => {
+      console.log(result);
       setCandidates(result.documents);
     });
   }, []);
@@ -26,10 +30,7 @@ function App() {
   return (
     <div class="container" style={eltContainerStyle}>
       <div className="nav">
-        <Nav />
-      </div>
-      <div className="side-menu" style={eltContainerStyle}>
-        <SideMenu setFilter={setFilter} departments={departments} />
+        <Nav setFilter={setFilter} departments={departments} />
       </div>
       <div className="main" style={eltContainerStyle}>
         <Main filter={filter} candidates={candidates} />
