@@ -7,6 +7,8 @@ import {
   InputLabel,
   TextField,
   CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import ProjectSection from "./ProjectSection";
 import CandidateSection from "./CandidateSection";
@@ -71,9 +73,16 @@ const styles = {
   },
 };
 //
-const ApplyForm = () => {
+const ApplyForm = ({ handleModalClose }) => {
   const [application, setApplication] = useState(emptyApplication);
-  const [personalCode, setPersonalCode] = useState(null);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarText, setSnackbarText] = useState(
+    "Candidature soumise avec succes",
+  );
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const handleSnackbarClose = () => {
+    setSnackbarVisible(false);
+  };
   const [isLoading, setIsLoading] = useState(false);
 
   const isMobile = useMediaQuery("(orientation: portrait)");
@@ -98,14 +107,25 @@ const ApplyForm = () => {
 
   const checkFileErrors = (error1, error2, error3, error4) => {
     const errorMessages = [];
-    if (error1.length) errorMessages.push("Photo candidat 1 trop large");
-    if (error2.length) errorMessages.push("CV candidat 1 trop large");
-    if (error3.length) errorMessages.push("Photo candidat 2 trop large");
-    if (error4.length) errorMessages.push("CV candidat 2 trop large");
+    let errorIndicator = false;
+    if (error1.length) {
+      errorMessages.push("Photo candidat 1 trop volumineux (max: 1.5Mb)");
+      errorIndicator = true;
+    }
+    if (error2.length) {
+      errorMessages.push("CV candidat 1 trop volumineux (max: 1.5Mb)");
+      errorIndicator = true;
+    }
+    if (error3.length) {
+      errorMessages.push("Photo candidat 2 trop volumineux (max: 1.5Mb)");
+      errorIndicator = true;
+    }
+    if (error4.length) {
+      errorMessages.push("CV candidat 2 trop volumineux (max: 1.5Mb)");
+      errorIndicator = true;
+    }
 
-    console.log(errorMessages.join("\n"));
-
-    return errorMessages.length;
+    return { errorMessages, errorIndicator };
   };
 
   //Candidate 1: ***********************************************
@@ -270,6 +290,24 @@ const ApplyForm = () => {
         {!isLoading && (
           <Button
             onClick={async () => {
+              const { errorMessages, errorIndicator } = checkFileErrors(
+                photo1Errors,
+                cv1Errors,
+                photo2Errors,
+                cv2Errors,
+              );
+              if (errorIndicator) {
+                setSnackbarVisible(true);
+                setSnackbarText(errorMessages);
+                setSnackbarSeverity("warning");
+                return;
+              }
+              if (!photo1Content[0] || !cv1Content[0]) {
+                setSnackbarVisible(true);
+                setSnackbarText("Fichiers manquants (CV ou photo)");
+                setSnackbarSeverity("warning");
+                return;
+              }
               setFile(
                 "candidate1",
                 "photo",
@@ -299,23 +337,45 @@ const ApplyForm = () => {
                 );
               }
 
-              const errorIndicator = checkFileErrors(
-                photo1Errors,
-                cv1Errors,
-                photo2Errors,
-                cv2Errors,
-              );
-              if (errorIndicator) {
-                return;
-              }
               setIsLoading(true);
-              await postApplication(application);
+              const response = await postApplication(application);
               setIsLoading(false);
+              const { status } = JSON.parse(response.responseBody);
+
+              if (status == "unregistered") {
+                setSnackbarVisible(true);
+                setSnackbarText("Code personnel ou email incorrect");
+                setSnackbarSeverity("warning");
+              } else if (status == "success") {
+                setSnackbarVisible(true);
+                setSnackbarText("Inscription reussie");
+                setSnackbarSeverity("success");
+                setTimeout(() => {
+                  handleModalClose();
+                }, 3000);
+              } else {
+                setSnackbarVisible(true);
+                setSnackbarText("Server error");
+                setSnackbarSeverity("error");
+              }
             }}
           >
             Envoyer
           </Button>
         )}
+        <Snackbar
+          open={snackbarVisible}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert
+            severity={snackbarSeverity}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {snackbarText}
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   );
