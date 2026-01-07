@@ -23,12 +23,14 @@ const styles = {
     width: "60%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
 
   candidatePhoto: {
-    height: "90%",
+    maxWidth: "40%",
+    maxHeight: "10em",
     aspectRatio: "1/1",
+    borderRadius: "5%",
   },
   mainInfo: {
     width: "100%",
@@ -50,6 +52,7 @@ const openToCv = async (cv) => {
 };
 
 const CompleteDesc = ({ candidateData }) => {
+  console.log("candidate data : ", candidateData);
   const isMobile = useMediaQuery("(orientation: portrait)");
   const responsiveStyles = isMobile
     ? {

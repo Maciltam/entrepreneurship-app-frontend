@@ -3,6 +3,7 @@ import "./shortDesc.css";
 
 import CompleteDesc from "./CompleteDesc";
 import { useState } from "react";
+import { useMediaQuery } from "@mui/material";
 
 const containerStyle = {
   display: "flex",
@@ -19,11 +20,15 @@ const containerStyle = {
 
 const subcontainerStyle = {
   width: "80%",
+  height: "80%",
+  display: "flex",
+  alignItems: "center",
 };
 
 const imageStyle = {
-  height: "90%",
-  aspectRatio: "1 / 1",
+  maxHeight: "60%",
+  maxWidth: "20%",
+  borderRadius: "5%",
 };
 
 const buttonStyle = {
@@ -33,11 +38,25 @@ const buttonStyle = {
 };
 
 const ShortDesc = ({ candidateData }) => {
+  const isMobile = useMediaQuery("(orientation: portrait)");
+  const mobileStyles = isMobile
+    ? {
+        containerStyle: {
+          height: "15em",
+        },
+        button: {
+          opacity: "0.5",
+        },
+      }
+    : {};
   console.log("Short description: ", candidateData);
   const [modalVisibility, setModalVisibility] = useState(false);
 
   return (
-    <div style={containerStyle} className="short-desc">
+    <div
+      style={{ ...containerStyle, ...mobileStyles.containerStyle }}
+      className="short-desc"
+    >
       <img src={candidateData.candidate1_photo_url} style={imageStyle} />
       <div className="short-desc-sub-container" style={subcontainerStyle}>
         <p>{candidateData.short_description}</p>

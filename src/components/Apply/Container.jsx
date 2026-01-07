@@ -166,6 +166,7 @@ const ApplyForm = () => {
     errors: cv2Errors,
     loading: cv2Loading,
   } = useFilePicker({
+    readAs: "BinaryString",
     accept: ".pdf",
     validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
   });
@@ -176,6 +177,7 @@ const ApplyForm = () => {
     errors: photo2Errors,
     loading: photo2Loading,
   } = useFilePicker({
+    readAs: "BinaryString",
     accept: "image/*",
     validators: [new FileSizeValidator({ maxFileSize: 1.5 * 1024 * 1024 })],
   });
