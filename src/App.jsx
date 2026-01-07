@@ -28,14 +28,16 @@ function App() {
   }, []);
 
   return (
-    <div class="container" style={eltContainerStyle}>
-      <div className="nav">
-        <Nav setFilter={setFilter} departments={departments} />
+    <ThemeProvider theme={darkTheme}>
+      <div class="container" style={eltContainerStyle}>
+        <div className="nav">
+          <Nav setFilter={setFilter} departments={departments} />
+        </div>
+        <div className="main" style={eltContainerStyle}>
+          <Main filter={filter} candidates={candidates} />
+        </div>
       </div>
-      <div className="main" style={eltContainerStyle}>
-        <Main filter={filter} candidates={candidates} />
-      </div>
-    </div>
+    </ThemeProvider>
   );
 }
 
