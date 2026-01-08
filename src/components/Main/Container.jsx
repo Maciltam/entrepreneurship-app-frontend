@@ -1,16 +1,19 @@
 import ShortDesc from "./ShortDesc";
-
-const styles = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  algnSelf: "center",
-  justifyContent: "space-around",
-  width: "90vw",
-  paddingTop: "2em",
-};
+import { useMediaQuery } from "@mui/material";
 
 const Container = ({ candidates, filter }) => {
+  const isMobile = useMediaQuery("(orientation: portrait)");
+
+  const styles = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    algnSelf: "center",
+    justifyContent: "space-around",
+    width: "90vw",
+    paddingTop: isMobile ? "25em" : "10em",
+  };
+
   return (
     <main style={styles}>
       {candidates

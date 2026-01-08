@@ -25,7 +25,7 @@ const Nav = ({ departments, setFilter }) => {
         style={{
           backgroundColor: "lightgreen",
           width: "100%",
-          height: "100%",
+          height: "4em",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-around",

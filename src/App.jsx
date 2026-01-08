@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { getAllCandidates } from "./utilities/dbInterfaces";
 import Nav from "./components/Nav/Container";
+
 import Main from "./components/Main/Container";
-import SideMenu from "./components/SideMenu/Container";
 import "./App.css";
 import { mockupCandidates, departments } from "./assets/mockupCandidates";
 import { darkTheme, lightTheme } from "./themes/themes";
@@ -28,7 +28,7 @@ function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div class="container" style={eltContainerStyle}>
+      <div class="container" style={{ ...eltContainerStyle }}>
         <div className="nav">
           <Nav setFilter={setFilter} departments={departments} />
         </div>
