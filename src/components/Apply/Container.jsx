@@ -340,8 +340,12 @@ const ApplyForm = ({ handleModalClose }) => {
               setIsLoading(true);
               const response = await postApplication(application);
               setIsLoading(false);
-              const { status } = JSON.parse(response.responseBody);
-
+              let status;
+              try {
+                status = JSON.parse(response.responseBody).status;
+              } catch {
+                console.log("response: ", response);
+              }
               if (status == "unregistered") {
                 setSnackbarVisible(true);
                 setSnackbarText("Code personnel ou email incorrect");
