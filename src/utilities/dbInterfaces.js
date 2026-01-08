@@ -3,13 +3,13 @@ import { Client, Databases, Functions } from "appwrite";
 const getAllCandidates = async () => {
   const client = new Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
-    .setProject("6953103d002e7e747a96");
+    .setProject(process.env.VITE_PROJECT_ID);
 
   const dbInterface = new Databases(client);
 
   try {
     const response = await dbInterface.listDocuments({
-      databaseId: "6954422e003ae9b9b994",
+      databaseId: process.env.VITE_DB_ID,
       collectionId: "candidates",
       queries: [],
     });
@@ -23,13 +23,13 @@ const getAllCandidates = async () => {
 const uploadData = async (data) => {
   const client = new Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
-    .setProject("6953103d002e7e747a96");
+    .setProject(process.env.VITE_PROJECT_ID);
 
   const functionInterface = new Functions(client);
 
   try {
     const response = await functionInterface.createExecution(
-      "6958cfde000c868fb930",
+      process.env.VITE_SUBMISSION_FUNCTION,
       data,
     );
     return response;

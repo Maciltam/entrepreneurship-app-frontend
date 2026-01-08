@@ -14,7 +14,7 @@ import ProjectSection from "./ProjectSection";
 import CandidateSection from "./CandidateSection";
 import { useFilePicker } from "use-file-picker";
 import { FileSizeValidator } from "use-file-picker/validators";
-import { postApplication } from "../../assets/mockupApplication";
+import { postApplication } from "../../utilities/mockupApplication";
 import { useMediaQuery } from "@mui/material";
 
 const emptyApplication = {
