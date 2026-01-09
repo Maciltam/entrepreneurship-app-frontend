@@ -275,7 +275,7 @@ const ApplyForm = ({ handleModalClose }) => {
         selectPhoto={openPhoto1Picker}
         selectCv={openCv1Picker}
       />
-      {application.application_type == "binome" && (
+      {application.table_data.application_type == "binome" && (
         <CandidateSection
           handleNameChange={handleName2Change}
           handleMailChange={handleMail2Change}
