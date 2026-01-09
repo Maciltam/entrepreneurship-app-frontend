@@ -52,6 +52,7 @@ const openToCv = async (cv) => {
 };
 
 const CompleteDesc = ({ candidateData }) => {
+  console.log("application type", candidateData);
   const isMobile = useMediaQuery("(orientation: portrait)");
   const responsiveStyles = isMobile
     ? {
