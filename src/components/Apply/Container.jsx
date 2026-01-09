@@ -256,19 +256,30 @@ const ApplyForm = ({ handleModalClose }) => {
           }}
         />
       </div>
-      <TextField
-        label="Departement"
-        style={{ width: "40%" }}
-        onChange={(e) => {
-          setApplication({
-            ...application,
-            table_data: {
-              ...application.table_data,
-              department: e.target.value,
-            },
-          });
-        }}
-      />
+      <FormControl style={{ width: "40%" }}>
+        <InputLabel>Département</InputLabel>
+        <Select
+          labelId="department-select-label"
+          id="department-select"
+          value={application.table_data.department}
+          label="Département"
+          onChange={(e) => {
+            setApplication({
+              ...application,
+              table_data: {
+                ...application.table_data,
+                department: e.target.value,
+              },
+            });
+          }}
+        >
+          <MenuItem value="Automatique">Automatique</MenuItem>
+          <MenuItem value="Informatique">Informatique</MenuItem>
+          <MenuItem value="Electrotechnique">Electrotechnique</MenuItem>
+          <MenuItem value="Electronique">Electronique</MenuItem>
+          <MenuItem value="Mecanique">Mecanique</MenuItem>
+        </Select>
+      </FormControl>
       <CandidateSection
         handleNameChange={handleName1Change}
         handleMailChange={handleMail1Change}
