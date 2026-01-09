@@ -11,7 +11,7 @@ const postApplication = async (application) => {
 
   const response = await functionInterface.createExecution({
     functionId: import.meta.env.VITE_SUBMISSION_FUNCTION,
-    data: JSON.stringify(application),
+    body: JSON.stringify(application),
     async: false,
   });
   return response;
