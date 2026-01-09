@@ -1,22 +1,22 @@
-import { Client, Databases, Functions } from "appwrite";
+import { Client, Databases, Functions, TablesDB } from "appwrite";
 
 const getAllCandidates = async () => {
   const client = new Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
     .setProject(import.meta.env.VITE_PROJECT_ID);
 
-  const dbInterface = new Databases(client);
+  const dbInterface = new TablesDB(client);
 
   try {
-    const response = await dbInterface.listDocuments({
+    const response = await dbInterface.listRows({
       databaseId: import.meta.env.VITE_DB_ID,
-      collectionId: import.meta.env.VITE_DB_COLLECTION_ID,
+      tableId: import.meta.env.VITE_DB_COLLECTION_ID,
       queries: [],
     });
 
     return response;
-  } catch (err) {
-    console.log(err);
+  } catch {
+    console.log("couldn't connect to database");
   }
 };
 
@@ -33,8 +33,8 @@ const uploadData = async (data) => {
       data,
     );
     return response;
-  } catch (err) {
-    console.log(err);
+  } catch {
+    console.log("An error of some sort");
   }
 };
 

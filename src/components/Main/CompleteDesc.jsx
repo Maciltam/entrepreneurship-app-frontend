@@ -52,7 +52,6 @@ const openToCv = async (cv) => {
 };
 
 const CompleteDesc = ({ candidateData }) => {
-  console.log("application type", candidateData);
   const isMobile = useMediaQuery("(orientation: portrait)");
   const responsiveStyles = isMobile
     ? {
@@ -89,7 +88,7 @@ const CompleteDesc = ({ candidateData }) => {
         onClick={() => {
           const url1 = candidateData.candidate1_cv_url;
           const url2 = candidateData.candidate2_cv_url;
-          console.log(url1, "\n", url2);
+
           window.open(url1, "_blank");
           setTimeout(() => {
             window.open(url2, "_blank");

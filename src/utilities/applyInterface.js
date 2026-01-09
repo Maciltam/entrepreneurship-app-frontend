@@ -7,11 +7,11 @@ const postApplication = async (application) => {
 
   const functionInterface = new Functions(client);
 
-  const response = await functionInterface.createExecution(
-    import.meta.env.VITE_SUBMISSION_FUNCTION,
-    JSON.stringify(application),
-    false,
-  );
+  const response = await functionInterface.createExecution({
+    functionId: import.meta.env.VITE_SUBMISSION_FUNCTION,
+    data: JSON.stringify(application),
+    async: false,
+  });
   return response;
 };
 

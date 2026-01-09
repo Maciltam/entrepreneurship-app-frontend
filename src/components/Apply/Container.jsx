@@ -368,15 +368,14 @@ const ApplyForm = ({ handleModalClose }) => {
                 }
 
                 setIsLoading(true);
-                console.log("Application: ", application);
+
                 const response = await postApplication(application);
                 setIsLoading(false);
                 let status;
                 try {
                   status = JSON.parse(response.responseBody).status;
-                  console.log(status);
                 } catch {
-                  console.log("response: ", response);
+                  console.log("Error response not valid json");
                 }
                 if (status == "unregistered") {
                   setSnackbarVisible(true);
@@ -390,7 +389,6 @@ const ApplyForm = ({ handleModalClose }) => {
                     handleModalClose();
                   }, 3000);
                 } else {
-                  console.log(status);
                   setSnackbarVisible(true);
                   setSnackbarText("Server error");
                   setSnackbarSeverity("error");

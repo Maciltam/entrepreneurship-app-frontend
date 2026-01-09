@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     getAllCandidates().then((result) => {
-      setCandidates(result.documents);
+      setCandidates(result.rows);
     });
   }, []);
 
