@@ -325,7 +325,7 @@ const ApplyForm = ({ handleModalClose }) => {
                 cv1Content[0].content,
               );
 
-              if (application.application_type == "binome") {
+              if (application.table_data.application_type == "binome") {
                 setFile(
                   "candidate2",
                   "photo",
