@@ -69,7 +69,7 @@ const CompleteDesc = ({ candidateData }) => {
           src={candidateData.candidate1_photo_url}
           style={styles.candidatePhoto}
         />
-        {candidateData.candidate2_photo_url && (
+        {candidateData.application_type == "binome" && (
           <img
             src={candidateData.candidate2_photo_url}
             style={styles.candidatePhoto}
