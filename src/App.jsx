@@ -18,7 +18,7 @@ const eltContainerStyle = {
 
 function App() {
   const [filter, setFilter] = useState("Tous les candidats");
-  const [candidates, setCandidates] = useState(mockupCandidates);
+  const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
     getAllCandidates().then((result) => {
@@ -28,11 +28,11 @@ function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div class="container" style={{ ...eltContainerStyle }}>
+      <div class="container">
         <div className="nav">
           <Nav setFilter={setFilter} departments={departments} />
         </div>
-        <div className="main" style={{ ...eltContainerStyle }}>
+        <div className="main">
           <Main filter={filter} candidates={candidates} />
         </div>
       </div>

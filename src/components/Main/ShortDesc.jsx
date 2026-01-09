@@ -13,7 +13,7 @@ const containerStyle = {
   borderRadius: "1em",
   padding: "0.5em 0.5em",
   width: "90%",
-  height: "7em",
+  minHeight: "10em",
   position: "relative",
   overflow: "hidden",
 };
@@ -29,6 +29,7 @@ const imageStyle = {
   maxHeight: "60%",
   maxWidth: "20%",
   borderRadius: "5%",
+  marginRight: "1.5em",
 };
 
 const buttonStyle = {
