@@ -21,7 +21,6 @@ import { useMediaQuery } from "@mui/material";
 
 const emptyApplication = {
   personal_code: "",
-  application_type: "",
   table_data: {
     candidate1_name: "",
     candidate2_name: "",
@@ -280,6 +279,7 @@ const ApplyForm = ({ handleModalClose }) => {
             value={application.table_data.department}
             label="Département"
             onChange={(e) => {
+              console.log("changed to: ", e.target.value);
               setApplication({
                 ...application,
                 table_data: {
@@ -368,7 +368,7 @@ const ApplyForm = ({ handleModalClose }) => {
                 }
 
                 setIsLoading(true);
-
+                console.log(application);
                 const response = await postApplication(application);
                 setIsLoading(false);
                 let status;
