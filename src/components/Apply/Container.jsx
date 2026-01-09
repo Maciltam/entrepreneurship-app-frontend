@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Button,
+  IconButton,
   Select,
   MenuItem,
   FormControl,
@@ -10,6 +11,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import ProjectSection from "./ProjectSection";
 import CandidateSection from "./CandidateSection";
 import { useFilePicker } from "use-file-picker";
@@ -217,188 +219,203 @@ const ApplyForm = ({ handleModalClose }) => {
   };
 
   return (
-    <div style={{ ...styles.container, ...responsiveStyles }}>
-      <div
+    <>
+      <IconButton
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-around",
-          width: "60%",
-          padding: "2em 5em",
+          position: "absolute",
+          top: "0.5em",
+          right: "0.5em",
+          width: "1.5em",
+          height: "1.5em",
+          backgroundColor: "red",
         }}
+        onClick={handleModalClose}
       >
+        <CloseIcon />
+      </IconButton>
+      <div style={{ ...styles.container, ...responsiveStyles }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+            width: "60%",
+            padding: "2em 5em",
+          }}
+        >
+          <FormControl style={{ width: "40%" }}>
+            <InputLabel>Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={application.type}
+              label="Age"
+              onChange={(e) => {
+                setApplication({
+                  ...application,
+                  table_data: {
+                    ...application.table_data,
+                    application_type: e.target.value,
+                  },
+                });
+              }}
+            >
+              <MenuItem value="monome">Monome</MenuItem>
+              <MenuItem value="binome">Binome</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            label="Code personnel"
+            style={{ width: "40%" }}
+            onChange={(e) => {
+              setApplication({ ...application, personal_code: e.target.value });
+            }}
+          />
+        </div>
         <FormControl style={{ width: "40%" }}>
-          <InputLabel>Type</InputLabel>
+          <InputLabel>Département</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={application.type}
-            label="Age"
+            labelId="department-select-label"
+            id="department-select"
+            value={application.table_data.department}
+            label="Département"
             onChange={(e) => {
               setApplication({
                 ...application,
                 table_data: {
                   ...application.table_data,
-                  application_type: e.target.value,
+                  department: e.target.value,
                 },
               });
             }}
           >
-            <MenuItem value="monome">Monome</MenuItem>
-            <MenuItem value="binome">Binome</MenuItem>
+            <MenuItem value="Automatique">Automatique</MenuItem>
+            <MenuItem value="Informatique">Informatique</MenuItem>
+            <MenuItem value="Electrotechnique">Electrotechnique</MenuItem>
+            <MenuItem value="Electronique">Electronique</MenuItem>
+            <MenuItem value="Mecanique">Mecanique</MenuItem>
           </Select>
         </FormControl>
-        <TextField
-          label="Code personnel"
-          style={{ width: "40%" }}
-          onChange={(e) => {
-            setApplication({ ...application, personal_code: e.target.value });
-          }}
-        />
-      </div>
-      <FormControl style={{ width: "40%" }}>
-        <InputLabel>Département</InputLabel>
-        <Select
-          labelId="department-select-label"
-          id="department-select"
-          value={application.table_data.department}
-          label="Département"
-          onChange={(e) => {
-            setApplication({
-              ...application,
-              table_data: {
-                ...application.table_data,
-                department: e.target.value,
-              },
-            });
-          }}
-        >
-          <MenuItem value="Automatique">Automatique</MenuItem>
-          <MenuItem value="Informatique">Informatique</MenuItem>
-          <MenuItem value="Electrotechnique">Electrotechnique</MenuItem>
-          <MenuItem value="Electronique">Electronique</MenuItem>
-          <MenuItem value="Mecanique">Mecanique</MenuItem>
-        </Select>
-      </FormControl>
-      <CandidateSection
-        handleNameChange={handleName1Change}
-        handleMailChange={handleMail1Change}
-        selectPhoto={openPhoto1Picker}
-        selectCv={openCv1Picker}
-      />
-      {application.table_data.application_type == "binome" && (
         <CandidateSection
-          handleNameChange={handleName2Change}
-          handleMailChange={handleMail2Change}
-          selectPhoto={openPhoto2Picker}
-          selectCv={openCv2Picker}
+          handleNameChange={handleName1Change}
+          handleMailChange={handleMail1Change}
+          selectPhoto={openPhoto1Picker}
+          selectCv={openCv1Picker}
         />
-      )}
-      <ProjectSection
-        setApplication={setApplication}
-        handleShortDescriptionChange={handleShortDescriptionChange}
-        handleLongDescriptionChange={handleLongDescriptionChange}
-      />
-      <div className="Send-button-div">
-        {isLoading && <CircularProgress />}
-        {!isLoading && (
-          <Button
-            onClick={async () => {
-              const { errorMessages, errorIndicator } = checkFileErrors(
-                photo1Errors,
-                cv1Errors,
-                photo2Errors,
-                cv2Errors,
-              );
-              if (errorIndicator) {
-                setSnackbarVisible(true);
-                setSnackbarText(errorMessages);
-                setSnackbarSeverity("warning");
-                return;
-              }
-              if (!photo1Content[0] || !cv1Content[0]) {
-                setSnackbarVisible(true);
-                setSnackbarText("Fichiers manquants (CV ou photo)");
-                setSnackbarSeverity("warning");
-                return;
-              }
-              setFile(
-                "candidate1",
-                "photo",
-                photo1Content[0].name,
-                photo1Content[0].content,
-              );
-
-              setFile(
-                "candidate1",
-                "cv",
-                cv1Content[0].name,
-                cv1Content[0].content,
-              );
-
-              if (application.table_data.application_type == "binome") {
-                setFile(
-                  "candidate2",
-                  "photo",
-                  photo2Content[0].name,
-                  photo2Content[0].content,
-                );
-                setFile(
-                  "candidate2",
-                  "cv",
-                  cv2Content[0].name,
-                  cv2Content[0].content,
-                );
-              }
-
-              setIsLoading(true);
-              console.log("Application: ", application);
-              const response = await postApplication(application);
-              setIsLoading(false);
-              let status;
-              try {
-                status = JSON.parse(response.responseBody).status;
-                console.log(status);
-              } catch {
-                console.log("response: ", response);
-              }
-              if (status == "unregistered") {
-                setSnackbarVisible(true);
-                setSnackbarText("Code personnel ou email incorrect");
-                setSnackbarSeverity("warning");
-              } else if (status == "success") {
-                setSnackbarVisible(true);
-                setSnackbarText("Inscription reussie");
-                setSnackbarSeverity("success");
-                setTimeout(() => {
-                  handleModalClose();
-                }, 3000);
-              } else {
-                console.log(status);
-                setSnackbarVisible(true);
-                setSnackbarText("Server error");
-                setSnackbarSeverity("error");
-              }
-            }}
-          >
-            Envoyer
-          </Button>
+        {application.table_data.application_type == "binome" && (
+          <CandidateSection
+            handleNameChange={handleName2Change}
+            handleMailChange={handleMail2Change}
+            selectPhoto={openPhoto2Picker}
+            selectCv={openCv2Picker}
+          />
         )}
-        <Snackbar
-          open={snackbarVisible}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-        >
-          <Alert
-            severity={snackbarSeverity}
-            variant="filled"
-            sx={{ width: "100%" }}
+        <ProjectSection
+          setApplication={setApplication}
+          handleShortDescriptionChange={handleShortDescriptionChange}
+          handleLongDescriptionChange={handleLongDescriptionChange}
+        />
+        <div className="Send-button-div">
+          {isLoading && <CircularProgress />}
+          {!isLoading && (
+            <Button
+              onClick={async () => {
+                const { errorMessages, errorIndicator } = checkFileErrors(
+                  photo1Errors,
+                  cv1Errors,
+                  photo2Errors,
+                  cv2Errors,
+                );
+                if (errorIndicator) {
+                  setSnackbarVisible(true);
+                  setSnackbarText(errorMessages);
+                  setSnackbarSeverity("warning");
+                  return;
+                }
+                if (!photo1Content[0] || !cv1Content[0]) {
+                  setSnackbarVisible(true);
+                  setSnackbarText("Fichiers manquants (CV ou photo)");
+                  setSnackbarSeverity("warning");
+                  return;
+                }
+                setFile(
+                  "candidate1",
+                  "photo",
+                  photo1Content[0].name,
+                  photo1Content[0].content,
+                );
+
+                setFile(
+                  "candidate1",
+                  "cv",
+                  cv1Content[0].name,
+                  cv1Content[0].content,
+                );
+
+                if (application.table_data.application_type == "binome") {
+                  setFile(
+                    "candidate2",
+                    "photo",
+                    photo2Content[0].name,
+                    photo2Content[0].content,
+                  );
+                  setFile(
+                    "candidate2",
+                    "cv",
+                    cv2Content[0].name,
+                    cv2Content[0].content,
+                  );
+                }
+
+                setIsLoading(true);
+                console.log("Application: ", application);
+                const response = await postApplication(application);
+                setIsLoading(false);
+                let status;
+                try {
+                  status = JSON.parse(response.responseBody).status;
+                  console.log(status);
+                } catch {
+                  console.log("response: ", response);
+                }
+                if (status == "unregistered") {
+                  setSnackbarVisible(true);
+                  setSnackbarText("Code personnel ou email incorrect");
+                  setSnackbarSeverity("warning");
+                } else if (status == "success") {
+                  setSnackbarVisible(true);
+                  setSnackbarText("Inscription reussie");
+                  setSnackbarSeverity("success");
+                  setTimeout(() => {
+                    handleModalClose();
+                  }, 3000);
+                } else {
+                  console.log(status);
+                  setSnackbarVisible(true);
+                  setSnackbarText("Server error");
+                  setSnackbarSeverity("error");
+                }
+              }}
+            >
+              Envoyer
+            </Button>
+          )}
+          <Snackbar
+            open={snackbarVisible}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
           >
-            {snackbarText}
-          </Alert>
-        </Snackbar>
+            <Alert
+              severity={snackbarSeverity}
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              {snackbarText}
+            </Alert>
+          </Snackbar>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

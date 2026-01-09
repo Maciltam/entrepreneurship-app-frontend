@@ -1,4 +1,4 @@
-import { Modal } from "@mui/material";
+import { Modal, Tooltip } from "@mui/material";
 import "./shortDesc.css";
 
 import CompleteDesc from "./CompleteDesc";
@@ -57,7 +57,10 @@ const ShortDesc = ({ candidateData }) => {
       style={{ ...containerStyle, ...mobileStyles.containerStyle }}
       className="short-desc"
     >
-      <img src={candidateData.candidate1_photo_url} style={imageStyle} />
+      <Tooltip title={candidateData.candidate1_name} placement="right">
+        <img src={candidateData.candidate1_photo_url} style={imageStyle} />
+      </Tooltip>
+
       <div className="short-desc-sub-container" style={subcontainerStyle}>
         <p>{candidateData.short_description}</p>
         <button

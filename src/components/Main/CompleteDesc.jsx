@@ -1,4 +1,4 @@
-import { useMediaQuery } from "@mui/material";
+import { useMediaQuery, Tooltip } from "@mui/material";
 
 const styles = {
   container: {
@@ -66,15 +66,19 @@ const CompleteDesc = ({ candidateData }) => {
   return (
     <div style={{ ...styles.container, ...responsiveStyles.container }}>
       <div style={styles.head}>
-        <img
-          src={candidateData.candidate1_photo_url}
-          style={styles.candidatePhoto}
-        />
-        {candidateData.application_type == "binome" && (
+        <Tooltip title={candidateData.candidate1_name} placement="bottom">
           <img
-            src={candidateData.candidate2_photo_url}
+            src={candidateData.candidate1_photo_url}
             style={styles.candidatePhoto}
           />
+        </Tooltip>
+        {candidateData.application_type == "binome" && (
+          <Tooltip title={candidateData.candidate2_name} placement="bottom">
+            <img
+              src={candidateData.candidate2_photo_url}
+              style={styles.candidatePhoto}
+            />
+          </Tooltip>
         )}
       </div>
       <div style={styles.mainInfo}>
@@ -82,12 +86,16 @@ const CompleteDesc = ({ candidateData }) => {
       </div>
       <button
         style={styles.cvButton}
-        onClick={async () => {
-          await openToCv(candidateData.candidate1_cv_url);
-          await openToCv(candidateData.candidate2_cv_url);
+        onClick={() => {
+          const url1 = candidateData.candidate1_cv_url;
+          const url2 = candidateData.candidate2_cv_url;
+          window.open(url1, "_blank");
+          setTimeout(() => {
+            window.open(url2, "_blank");
+          }, 500);
         }}
       >
-        Get CVs
+        Voir CVs
       </button>
     </div>
   );
