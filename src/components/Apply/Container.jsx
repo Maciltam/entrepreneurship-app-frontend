@@ -237,7 +237,10 @@ const ApplyForm = ({ handleModalClose }) => {
             onChange={(e) => {
               setApplication({
                 ...application,
-                application_type: e.target.value,
+                table_data: {
+                  ...application.table_data,
+                  application_type: e.target.value,
+                },
               });
             }}
           >
@@ -338,11 +341,13 @@ const ApplyForm = ({ handleModalClose }) => {
               }
 
               setIsLoading(true);
+              console.log("Application: ", application);
               const response = await postApplication(application);
               setIsLoading(false);
               let status;
               try {
                 status = JSON.parse(response.responseBody).status;
+                console.log(status);
               } catch {
                 console.log("response: ", response);
               }
@@ -358,6 +363,7 @@ const ApplyForm = ({ handleModalClose }) => {
                   handleModalClose();
                 }, 3000);
               } else {
+                console.log(status);
                 setSnackbarVisible(true);
                 setSnackbarText("Server error");
                 setSnackbarSeverity("error");

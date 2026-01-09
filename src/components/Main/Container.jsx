@@ -8,10 +8,9 @@ const Container = ({ candidates, filter }) => {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    algnSelf: "center",
     justifyContent: "space-around",
     width: "90vw",
-    paddingTop: isMobile ? "25em" : "10em",
+    padding: isMobile ? "5em" : "5em",
   };
 
   return (
