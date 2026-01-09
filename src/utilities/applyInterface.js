@@ -6,6 +6,8 @@ const postApplication = async (application) => {
     .setProject(import.meta.env.VITE_PROJECT_ID);
 
   const functionInterface = new Functions(client);
+  const sentData = JSON.stringify(application);
+  console.log(sentData);
 
   const response = await functionInterface.createExecution({
     functionId: import.meta.env.VITE_SUBMISSION_FUNCTION,
