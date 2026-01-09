@@ -10,7 +10,7 @@ const getAllCandidates = async () => {
   try {
     const response = await dbInterface.listDocuments({
       databaseId: import.meta.env.VITE_DB_ID,
-      collectionId: "candidates",
+      collectionId: import.meta.env.VITE_DB_COLLECTION_ID,
       queries: [],
     });
 
