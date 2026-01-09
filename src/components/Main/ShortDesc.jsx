@@ -13,7 +13,7 @@ const containerStyle = {
   borderRadius: "1em",
   padding: "0.5em 0.5em",
   width: "90%",
-  minHeight: "10em",
+  minHeight: "7em",
   position: "relative",
   overflow: "hidden",
 };
